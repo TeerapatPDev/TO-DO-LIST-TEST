@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Task Manager with Containers</title>
+        <link rel="stylesheet" href="styles.css">
+    </head>
+    <body>
+        <header class="app-header">
+            <h1>Task Manager</h1>
+        </header>
+    
+        <main class="app-container">
+            <!-- Left sidebar for categories -->
+            <aside class="sidebar">
+                <div class="sidebar-header">
+                    <h2>Categories</h2>
+                    <button id="add-category-btn" class="icon-btn">+</button>
+                </div>
+                <ul class="category-list" id="category-list">
+                    <li class="category-item active" data-category="all">
+                        <span class="category-icon">📋</span>
+                        <span class="category-name">All Tasks</span>
+                    </li>
+                    <li class="category-item" data-category="work">
+                        <span class="category-icon">💼</span>
+                        <span class="category-name">Work</span>
+                        <div class="category-actions">
+                            <button class="category-edit-btn">✏️</button>
+                            <button class="category-delete-btn">🗑️</button>
+                        </div>
+                    </li>
+                    <li class="category-item" data-category="personal">
+                        <span class="category-icon">🏠</span>
+                        <span class="category-name">Personal</span>
+                        <div class="category-actions">
+                            <button class="category-edit-btn">✏️</button>
+                            <button class="category-delete-btn">🗑️</button>
+                        </div>
+                    </li>
+                    <li class="category-item" data-category="shopping">
+                        <span class="category-icon">🛒</span>
+                        <span class="category-name">Shopping</span>
+                        <div class="category-actions">
+                            <button class="category-edit-btn">✏️</button>
+                            <button class="category-delete-btn">🗑️</button>
+                        </div>
+                    </li>
+                </ul>
+            </aside>
+    
+            <!-- Main task content area -->
+            <section class="content">
+                <!-- Task creation form -->
+                <div class="task-form-container">
+                    <form id="task-form" class="task-form">
+                        <input type="text" id="task-input" placeholder="Add a new task..." required>
+                        <select id="task-category">
+                            <option value="work">Work</option>
+                            <option value="personal">Personal</option>
+                            <option value="shopping">Shopping</option>
+                        </select>
+                        <button type="submit" id="add-button">Add Task</button>
+                    </form>
+                </div>
+    
+                <!-- Task filters -->
+                <div class="task-filters">
+                    <button class="filter-btn active" data-filter="all">All</button>
+                    <button class="filter-btn" data-filter="active">Active</button>
+                    <button class="filter-btn" data-filter="completed">Completed</button>
+                </div>
+    
+                <!-- Task containers -->
+                <div class="task-containers">
+                    <!-- Tasks in progress -->
+                    <div class="task-container" id="tasks-progress">
+                        <div class="container-header">
+                            <h3>In Progress</h3>
+                            <span class="task-count" id="progress-count">0</span>
+                        </div>
+                        <ul class="task-list" id="progress-list">
+                            <!-- Tasks will be added here by JavaScript -->
+                        </ul>
+                    </div>
+    
+                    <!-- Completed tasks -->
+                    <div class="task-container" id="tasks-completed">
+                        <div class="container-header">
+                            <h3>Completed</h3>
+                            <span class="task-count" id="completed-count">0</span>
+                        </div>
+                        <ul class="task-list" id="completed-list">
+                            <!-- Tasks will be added here by JavaScript -->
+                        </ul>
+                    </div>
+                </div>
+            </section>
+        </main>
+    
+        <!-- Add category modal -->
+        <div class="modal" id="category-modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Add New Category</h3>
+                    <button class="close-modal">&times;</button>
+                </div>
+                <form id="category-form">
+                    <div class="form-group">
+                        <label for="category-name">Category Name</label>
+                        <input type="text" id="category-name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="category-icon">Icon (emoji)</label>
+                        <input type="text" id="category-icon" placeholder="📝" maxlength="2">
+                    </div>
+                    <button type="submit" class="btn">Add Category</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Edit category modal -->
+        <div class="modal" id="edit-category-modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Edit Category</h3>
+                    <button class="close-modal">&times;</button>
+                </div>
+                <form id="edit-category-form">
+                    <input type="hidden" id="edit-category-id">
+                    <div class="form-group">
+                        <label for="edit-category-name">Category Name</label>
+                        <input type="text" id="edit-category-name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-category-icon">Icon (emoji)</label>
+                        <input type="text" id="edit-category-icon" placeholder="📝" maxlength="2">
+                    </div>
+                    <button type="submit" class="btn">Update Category</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Edit task modal -->
+        <div class="modal" id="edit-task-modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Edit Task</h3>
+                    <button class="close-modal">&times;</button>
+                </div>
+                <form id="edit-task-form">
+                    <input type="hidden" id="edit-task-id">
+                    <div class="form-group">
+                        <label for="edit-task-text">Task Name</label>
+                        <input type="text" id="edit-task-text" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-task-category">Category</label>
+                        <select id="edit-task-category"></select>
+                    </div>
+                    <button type="submit" class="btn">Update Task</button>
+                </form>
+            </div>
+        </div>
+    
+        <script src="script.js"></script>
+    </body>
+</html>
