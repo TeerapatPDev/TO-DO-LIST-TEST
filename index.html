@@ -61,6 +61,21 @@
                             <option value="personal">Personal</option>
                             <option value="shopping">Shopping</option>
                         </select>
+                        <!-- New date/time fields -->
+                        <div class="form-row">
+                            <input type="date" id="task-date" required>
+                            <input type="time" id="task-time" required>
+                        </div>
+                        <!-- New notification field -->
+                        <div class="form-row">
+                            <select id="task-reminder">
+                                <option value="none">No reminder</option>
+                                <option value="30">30 min before</option>
+                                <option value="60">1 hour before</option>
+                                <option value="120">2 hours before</option>
+                            </select>
+                            <input type="email" id="task-email" placeholder="Email for notification" required>
+                        </div>
                         <button type="submit" id="add-button">Add Task</button>
                     </form>
                 </div>
@@ -69,6 +84,7 @@
                 <div class="task-filters">
                     <button class="filter-btn active" data-filter="all">All</button>
                     <button class="filter-btn" data-filter="active">Active</button>
+                    <button class="filter-btn" data-filter="late">Late</button>
                     <button class="filter-btn" data-filter="completed">Completed</button>
                 </div>
     
@@ -82,6 +98,17 @@
                         </div>
                         <ul class="task-list" id="progress-list">
                             <!-- Tasks will be added here by JavaScript -->
+                        </ul>
+                    </div>
+                    
+                    <!-- Late tasks -->
+                    <div class="task-container" id="tasks-late">
+                        <div class="container-header">
+                            <h3>Late</h3>
+                            <span class="task-count" id="late-count">0</span>
+                        </div>
+                        <ul class="task-list" id="late-list">
+                            <!-- Late tasks will be added here by JavaScript -->
                         </ul>
                     </div>
     
@@ -159,8 +186,46 @@
                         <label for="edit-task-category">Category</label>
                         <select id="edit-task-category"></select>
                     </div>
+                    <div class="form-group">
+                        <label for="edit-task-date">Due Date</label>
+                        <input type="date" id="edit-task-date" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-task-time">Due Time</label>
+                        <input type="time" id="edit-task-time" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-task-reminder">Reminder</label>
+                        <select id="edit-task-reminder">
+                            <option value="none">No reminder</option>
+                            <option value="30">30 min before</option>
+                            <option value="60">1 hour before</option>
+                            <option value="120">2 hours before</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-task-email">Notification Email</label>
+                        <input type="email" id="edit-task-email" required>
+                    </div>
                     <button type="submit" class="btn">Update Task</button>
                 </form>
+            </div>
+        </div>
+        
+        <!-- Notification modal for reminders -->
+        <div class="modal" id="notification-modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Task Reminder</h3>
+                    <button class="close-modal">&times;</button>
+                </div>
+                <div class="notification-content">
+                    <p id="notification-message"></p>
+                    <div class="notification-buttons">
+                        <button id="dismiss-notification" class="btn">Dismiss</button>
+                        <button id="snooze-notification" class="btn">Snooze 15min</button>
+                    </div>
+                </div>
             </div>
         </div>
     
