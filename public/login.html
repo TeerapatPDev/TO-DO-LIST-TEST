@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login/Register Toggle</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #62dc367a;
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .form-container {
+            width: 350px;
+            position: relative;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            border: 2px solid #ddd;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            background-color: white;
+            transition: all 0.3s ease;
+        }
+
+        form h2 {
+            text-align: center;
+            margin-top: 0;
+            color: #333;
+        }
+
+        form label {
+            margin-bottom: 5px;
+            color: #555;
+        }
+
+        form input {
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        form button {
+            border-radius: 10px;
+            padding: 10px;
+            background-color: #f0f0f0;
+            border: 1px solid #ddd;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        form button:hover {
+            background-color: #4CAF50;
+            color: white;
+            cursor: pointer;
+            transform: scale(1.03);
+            transition: all 0.2s ease;
+        }
+
+        .toggle-btn {
+            display: block;
+            text-align: center;
+            margin-top: 15px;
+            color: #4CAF50;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .toggle-btn:hover {
+            text-decoration: underline;
+        }
+
+        #register-form {
+            display: none;
+        }
+
+        .form-switch-container {
+            position: absolute;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            top: -50px;
+        }
+
+        .form-switch {
+            display: flex;
+            background-color: #f0f0f0;
+            border-radius: 30px;
+            overflow: hidden;
+            border: 1px solid #ddd;
+        }
+
+        .switch-option {
+            padding: 10px 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .switch-option.active {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        .forgot-password {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        a {
+            text-decoration: none;
+            color: #4CAF50;
+            font-size: 14px;
+        }
+
+        a:hover {
+            text-decoration: underline;
+            color: #388E3C;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="form-container">
+            <div class="form-switch-container">
+                <div class="form-switch">
+                    <div class="switch-option active" id="login-switch">Login</div>
+                    <div class="switch-option" id="register-switch">Register</div>
+                </div>
+            </div>
+
+            <!-- Login Form -->
+            <form id="login-form">
+                <h2>Login</h2>
+                <label for="username">Email:</label>
+                <input type="email" id="username" required>
+
+                <label for="password">Password:</label>
+                <input type="password" id="password" required>
+
+                <button type="submit">Login</button>
+
+                <div class="forgot-password">
+                    <a href="#">Forgot Password?</a>
+                </div>
+
+                <div class="toggle-btn" id="to-register">Don't have an account? Register here</div>
+            </form>
+
+            <!-- Register Form -->
+            <form id="register-form">
+                <h2>Register</h2>
+                <label for="reg_username">Username:</label>
+                <input type="text" id="reg_username" required>
+
+                <label for="reg_password">Password:</label>
+                <input type="password" id="reg_password" required>
+
+                <label for="reg_email">Email:</label>
+                <input type="email" id="reg_email" required>
+
+                <button type="submit">Register</button>
+
+                <div class="toggle-btn" id="to-login">Already have an account? Login here</div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Firebase + Auth -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-app.js";
+        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-auth.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDAhPoXF1yVLpjGrj3F5Jd0tX-jryQMAy8",
+            authDomain: "tsk-manager-f24a6.firebaseapp.com",
+            projectId: "tsk-manager-f24a6",
+            storageBucket: "tsk-manager-f24a6.firebasestorage.app",
+            messagingSenderId: "888379903085",
+            appId: "1:888379903085:web:eac6bae9a885eb5a444364",
+            measurementId: "G-N3P66X49V4"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+
+        const loginForm = document.getElementById('login-form');
+        const registerForm = document.getElementById('register-form');
+
+        loginForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const email = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            signInWithEmailAndPassword(auth, email, password)
+                .then(() => {
+                    alert("Login successful");
+                    window.location.href = "index.html";
+                })
+                .catch(err => {
+                    alert("Login failed: " + err.message);
+                });
+        });
+
+        registerForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const email = document.getElementById('reg_email').value;
+            const password = document.getElementById('reg_password').value;
+
+            createUserWithEmailAndPassword(auth, email, password)
+                .then(() => {
+                    alert("Registered successfully");
+                    showLoginForm();
+                    resetForms();
+                })
+                .catch(err => {
+                    alert("Registration failed: " + err.message);
+                });
+        });
+
+        // Toggle forms
+        const toRegisterBtn = document.getElementById('to-register');
+        const toLoginBtn = document.getElementById('to-login');
+        const loginSwitch = document.getElementById('login-switch');
+        const registerSwitch = document.getElementById('register-switch');
+
+        function showLoginForm() {
+            loginForm.style.display = 'flex';
+            registerForm.style.display = 'none';
+            loginSwitch.classList.add('active');
+            registerSwitch.classList.remove('active');
+        }
+
+        function showRegisterForm() {
+            loginForm.style.display = 'none';
+            registerForm.style.display = 'flex';
+            registerSwitch.classList.add('active');
+            loginSwitch.classList.remove('active');
+        }
+
+        function resetForms() {
+            loginForm.reset();
+            registerForm.reset();
+        }
+
+        toRegisterBtn.addEventListener('click', showRegisterForm);
+        toLoginBtn.addEventListener('click', showLoginForm);
+        loginSwitch.addEventListener('click', showLoginForm);
+        registerSwitch.addEventListener('click', showRegisterForm);
+    </script>
+</body>
+
+</html>
