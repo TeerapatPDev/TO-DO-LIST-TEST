@@ -4,13 +4,14 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Task Manager with Containers</title>
-        <link rel="stylesheet" href="/css/styles.css">
+        <link rel="stylesheet" href="css/styles.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/emojionearea/3.4.2/emojionearea.css">
     </head>
     <body>
         <header class="app-header">
             <h1>Task Manager</h1>
         </header>
-    
+
         <main class="app-container">
             <!-- Left sidebar for categories -->
             <aside class="sidebar">
@@ -138,9 +139,21 @@
                         <label for="category-name">Category Name</label>
                         <input type="text" id="category-name" required>
                     </div>
+
+                    <!-- jquery link -->
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
                     <div class="form-group">
                         <label for="category-icon">Icon (emoji)</label>
-                        <input type="text" id="category-icon" placeholder="📝" maxlength="2">
+                        <!-- javascript for emoji picker -->
+                        <script src="https://cdnjs.cloudflare.com/ajax/libs/emojionearea/3.4.2/emojionearea.js"></script>
+
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                        <input type="text" id="category-icon" placeholder="Click to pick emoji" maxlength="1" readonly>
+                            <script>
+                                $("#category-icon").emojioneArea()
+                            </script>
+                        </div>
                     </div>
                     <button type="submit" class="btn">Add Category</button>
                 </form>
@@ -162,7 +175,10 @@
                     </div>
                     <div class="form-group">
                         <label for="edit-category-icon">Icon (emoji)</label>
-                        <input type="text" id="edit-category-icon" placeholder="📝" maxlength="2">
+                        <input type="text" id="edit-category-icon" placeholder="Please Pick emoji" maxlength="1">
+                        <script>
+                            $("#edit-category-icon").emojioneArea()
+                        </script>
                     </div>
                     <button type="submit" class="btn">Update Category</button>
                 </form>
@@ -229,6 +245,7 @@
             </div>
         </div>
     
-        <script src="/js/script.js"></script>
+        <script src="js/script.js"></script>
+
     </body>
 </html>
